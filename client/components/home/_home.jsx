@@ -4,7 +4,8 @@ import { AuthContext } from '../../utils/auth_context';
 import { Button } from '../common/button';
 import { io } from 'socket.io-client';
 import { Room } from './room';
-import {Ping} from './ping';
+import { Room_Card } from './room_card';
+import { Input } from '../common/input';
 
 export const Home = () => {
   const api = useContext(ApiContext);
@@ -13,85 +14,57 @@ export const Home = () => {
   const [currentRooms, setCurrentRooms] = useState([]);
   const [authToken] = useContext(AuthContext);
   const [socket, setSocket] = useState(null);
-
+  const [roomName, setRoomName] = useState('');
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(async () => {
     const res = await api.get('/users/me');
     setUser(res.user);
-    setLoading(false);
-  }, []);
-
-
-  useEffect(async () => {
     const {rooms} = await api.get('/rooms');
     setCurrentRooms(rooms);
-  }, []);
+    setLoading(false);
+  }, [currentRoom]); 
   
-  useEffect(() => {
-      const socket = io({
-        auth: { token: authToken },
-        query: { message: 'I am the query ' },
-      });
-
-      socket.on('connect', () => {
-        setSocket(socket);
-      });
-
-      socket.on('disconnect', () => {
-        console.log('Disconnected');
-      });
-
-      return () => {
-        socket.off('connect');
-        socket.off('disconnect');
-        socket.disconnect();
-      };
-  }, []);
-
-  useEffect(() => {
-      if (socket) {
-          socket.auth.token = authToken;
-      }
-  }, [authToken]);
-
-  useEffect(async () => {
-    if(currentRoomKey){
-      const {room} = await api.get(`/rooms/key/${currentRoomKey}`)
-      setCurrentRoom(room);
-    }
-}, [currentRoomKey]);
-  
-  if (loading || !socket) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
   const createRoom = async () => {
-      const RoomBody = {
-          name: "test",
+      if(roomName)
+      {
+        const RoomBody = {
+          name: roomName,
+        }
+
+        setRoomName('');
+
+        const {room} = await api.post('/rooms', RoomBody);
+        console.log(room);
+        
+        setCurrentRooms([...currentRooms, room]);
+        setCurrentRoom(room);
+
       }
-
-      const {room} = await api.post('/rooms', RoomBody);
-
-      await joinRoom(room.roomkey);
-  }
-
-  const joinRoom = async (roomKey) => {
-    socket.emit('join-room', { currentRoomKey, newRoomKey: roomKey }, (response) => {
-        console.log(response);
-        setCurrentRoomKey(response.newRoomKey);
-    });
+      else{
+        alert('Please enter a room name');
+      }
   }
 
   return (
     <div>
-      <Button onClick={createRoom}>New Room</Button>
-      <Room room={currentRoom}/>
-      {currentRooms.map((room) => {
-        console.log(room.roomkey);
-        return <div key={room.id}><Button onClick={()=>{joinRoom(room.roomkey)}}>{room.id}</Button></div> 
-      })}
+      <Button onClick={()=>createRoom()}>New Room</Button>
+      <Input id="roomNameEnter" value={roomName} onChange={(e)=>{setRoomName(e.target.value)}}/>
+
+      <div>
+        <Room room={currentRoom} user={user}/>
+      </div>
+      <div>
+        {currentRooms.map((room) => {
+          return <div key={room.roomkey}><Room_Card room={room} joinRoom={()=>{setCurrentRoom(room)}}/></div> 
+        })}
+      </div>
+      
     </div>
   );
 };

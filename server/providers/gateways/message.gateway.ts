@@ -13,16 +13,19 @@ import {
 } from '@nestjs/websockets';
 import { JwtService } from '../services/jwt.service';
 import { Server, Socket } from 'socket.io';
+import { GatewayJwtBody } from 'server/decorators/gateway_jwt_body.decorator';
+import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 
-class JoinPayload {
-  currentRoomKey?: string;
-  newRoomKey: string;
+
+class currentRoomPayLoad {
+  currentRoomKey: string;
 }
 
 class MessagePayLoad {
   public message: string;
-  public userId: number;
   public userName: string;
+  public roomKey: string;
+  public time: string;
 }
 
 @WebSocketGateway()
@@ -37,8 +40,8 @@ export class MessageGateway {
     try {
       const jwt = client.handshake.auth.token;
       const jwtBody = this.jwtService.parseToken(jwt);
-      console.log(client.handshake.query);
-      console.log('Client Connected: ', jwtBody.userId);
+      client.join(client.handshake.query.roomKey as unknown as string);
+      console.log('Client Connected: ', jwtBody.userId, client.handshake.query.roomKey);
     } catch (e) {
       throw new WsException('Invalid token');
     }
@@ -48,18 +51,14 @@ export class MessageGateway {
     console.log('Client disconnected');
   }
 
-  @SubscribeMessage('join-room')
-  public async joinRoom(client: Socket, payload: JoinPayload) {
-    console.log(payload);
+  @SubscribeMessage('message')
+  public async sendMessage(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: MessagePayLoad,
+    @GatewayJwtBody() jwtBody: JwtBodyDto)
+  {
+    console.log('Message received: ', payload);
 
-    payload.currentRoomKey && (await client.leave(payload.currentRoomKey));
-
-    await client.join(payload.newRoomKey);
-    
-    const res = { msg: 'Joined room', newRoomKey: payload.newRoomKey };
-
-    console.log(res);
-
-    return res;
+    this.server.to(payload.roomKey).emit('message', payload);
   }
 }
