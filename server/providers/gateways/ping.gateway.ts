@@ -1,5 +1,15 @@
 import { UseGuards } from '@nestjs/common';
-import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
+import {
+  ConnectedSocket,
+  MessageBody,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  OnGatewayInit,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  WsException,
+} from '@nestjs/websockets';
 import { GatewayJwtBody } from 'server/decorators/gateway_jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Server, Socket } from 'socket.io';
@@ -54,10 +64,11 @@ export class PingGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     @GatewayJwtBody() jwtBody: JwtBodyDto,
   ) {
     this.server.to(payload.currentRoom).emit('pong', { message: { userId: jwtBody.userId } });
+    this.server.to(payload.currentRoom).emit('join-room', 5);
     console.log(client.rooms);
   }
 
-  @SubscribeMessage('join-room')
+  @SubscribeMessage('join--room')
   public async joinRoom(client: Socket, payload: JoinPayload) {
     console.log(payload);
     payload.currentRoom && (await client.leave(payload.currentRoom));

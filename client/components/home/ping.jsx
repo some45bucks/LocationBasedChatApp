@@ -33,11 +33,16 @@ export const Ping = () => {
       console.log('Recieved pong', data);
     });
 
+    socket.on('join-room', (data) => {
+      console.log("tesatestest");
+    });
+
     // IMPORTANT! Unregister from all events when the component unmounts and disconnect.
     return () => {
       socket.off('connect');
       socket.off('disconnect');
       socket.off('pong');
+      socket.off('join-room');
       socket.disconnect();
     };
   }, []);
@@ -56,6 +61,8 @@ export const Ping = () => {
   const sendPing = () => {
     // sends a ping to the server to be broadcast to everybody in the room
     currentRoom && socket.emit('ping', { currentRoom });
+
+    joinRoom();
   };
 
   const joinRoom = () => {
