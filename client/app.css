@@ -3,3 +3,186 @@
 @tailwind components;
 
 @tailwind utilities;
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.main-parent {
+  background-color: #332930;
+  display: flex;
+  flex-direction: row;
+
+  height: 100%;
+}
+
+.create-room-container {
+    background-color: yellow;
+  border-radius: 4px;
+  margin-top: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.main-side-column {
+  background-color: #332930;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+
+}
+
+.myinput{
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+    margin-bottom: 10px;
+}
+
+.main-side-column-rooms {
+-ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  overflow-y: auto;
+  height: max-content;
+}
+
+.main-side-column-rooms::-webkit-scrollbar {
+    display: none;
+}
+
+.main-room-container {
+  background-color: #332930;
+  border-radius: 4px;
+  padding: 20px;
+  margin-left: 20px;
+  width: 100%;
+}
+
+.room-card-create {
+    background-color: #3F283D;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    outline: #D75414 solid 3px;
+}
+  
+  .room-card-container-create {
+      margin-top: 0px;
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+      
+  }
+
+.room-card {
+  background-color: #3F283D;
+  border-radius: 4px;
+  margin-top: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  outline: #D75414 solid 3px;
+
+}
+
+.latLong{
+    color: white;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.room-card-container {
+    color: white;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+.send-container{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.message-container{
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    height: 580px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.user-style{
+    font-weight: bold;
+    background-color: aliceblue;
+    border-radius: 4px;
+    text-align: center;
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 30px;
+}
+
+.message-text{
+    color: white;
+    width: 900px;
+    border-radius: 4px;
+    border: 1px solid #FC9709;
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin: 10px;
+    width: auto;
+    padding: 5px;
+    overflow-wrap: break-word;
+}
+
+
+.message{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.room-title{
+    border-radius: 4px;
+    background-color: #3F283D;
+    color: white;
+    padding: 10px;
+    width: 30%;
+    outline: #D75414 solid 3px;
+}
+
+.send-input{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 500px;
+}
