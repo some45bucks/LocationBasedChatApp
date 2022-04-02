@@ -18,7 +18,7 @@ export class RoomService {
     return this.roomRepository.findOne(id);
   }
 
-  findByKey(key: String): Promise<Room> {
+  findByKey(key: string): Promise<Room> {
     return this.roomRepository.findOne({ where: { roomkey: key } });
   }
 

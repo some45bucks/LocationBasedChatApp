@@ -9,11 +9,24 @@ import { Link } from 'react-router-dom';
 export const Room_Card = ({room,joinRoom}) => {
 
     return (
-        <div>
-            {room.name}
-            <Button onClick={joinRoom}>Join</Button>
-            {room.roomkey}
+        <>
+        <div className="room-card">
+            <div className="room-card-container">
+                <span className="text-xl">{room.name}</span>
+            </div>
+
+            
+            
+            <div className="room-card-container">
+                    <Button onClick={joinRoom}>Join</Button>
+            </div>
+            
         </div>
+        <div className="latLong">
+              {room.latitude}  {room.longitude}
+        </div>
+        </>
+        
           
     );
 }

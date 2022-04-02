@@ -23,6 +23,16 @@ export class AddRoom1648519133281 implements MigrationInterface {
             isUnique: true,
             isNullable: false,
           },
+          {
+            name: 'longitude',
+            type: 'float',
+            isNullable: false,
+          },
+          {
+            name: 'latitude',
+            type: 'float',
+            isNullable: false,
+          },
         ],
       }),
     );

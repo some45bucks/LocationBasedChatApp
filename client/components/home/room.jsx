@@ -17,31 +17,25 @@ export const Room = ({room,user}) => {
         setNextMessage('');
     }, [room])
 
-    useEffect(() => {
-        console.log("messages");
-        console.log(messages);
-    },[messages])
-
     if(!room){
-        return <div>No room selected</div>;
+        return <span className="text-xl room-title">Click On a Room</span> ;
     }
 
     return (
         <div>
-            {room.name}
-            <div>
-                <Button onClick={()=>{
-                    console.log("send");
-                    sendMessage(nextMessage,user,room.roomkey)}}>Send Message</Button>
-                <Input value={nextMessage} onChange={(e)=>{
-                    setNextMessage(e.target.value)}}/>
-            </div>
-            <div>
-                {messages.map((message) => {
-                    console.log("message");
+            <span className="text-xl room-title">{room.name}</span> 
+            <div className="message-container">
+                {[...messages].reverse().map((message) => {
                     return <div key={message.time}><Message message={message}/></div> 
                 })}
             </div>
+            <div className="send-container">
+                <Button onClick={()=>{
+                    sendMessage(nextMessage,user,room.roomkey)}}>Send Message</Button>
+                <Input className="myinput send-input" value={nextMessage} onChange={(e)=>{
+                    setNextMessage(e.target.value)}}/>
+            </div>
+            
         </div>
         
     );

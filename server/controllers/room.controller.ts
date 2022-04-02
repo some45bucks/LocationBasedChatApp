@@ -5,6 +5,8 @@ import * as crypto from 'crypto';
 
 class RoomBody {
   name: string;
+  latitude: number;
+  longitude: number;
 }
 
 @Controller()
@@ -33,6 +35,8 @@ export class RoomController {
   async create(@Body() body: RoomBody) {
     let room = new Room();
     room.name = body.name;
+    room.latitude = body.latitude;
+    room.longitude = body.longitude;
     room.roomkey = crypto.randomBytes(8).toString('hex');
     room = await this.roomService.create(room);
     return { room };

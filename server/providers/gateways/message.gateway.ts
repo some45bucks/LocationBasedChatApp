@@ -16,7 +16,6 @@ import { Server, Socket } from 'socket.io';
 import { GatewayJwtBody } from 'server/decorators/gateway_jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 
-
 class currentRoomPayLoad {
   currentRoomKey: string;
 }
@@ -55,8 +54,8 @@ export class MessageGateway {
   public async sendMessage(
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: MessagePayLoad,
-    @GatewayJwtBody() jwtBody: JwtBodyDto)
-  {
+    @GatewayJwtBody() jwtBody: JwtBodyDto,
+  ) {
     console.log('Message received: ', payload);
 
     this.server.to(payload.roomKey).emit('message', payload);

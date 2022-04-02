@@ -10,4 +10,10 @@ export class Room {
 
   @Column()
   roomkey: string;
+
+  @Column()
+  longitude: number;
+
+  @Column()
+  latitude: number;
 }
